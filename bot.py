@@ -59,7 +59,7 @@ def fetch_timedelta_string(timedelta):
 @bot.event
 async def on_ready():
     print("Connected!")
-    gitStatus = discord.Game(GITHUB_REPO)
+    git_status = discord.Game(GITHUB_REPO)
     await bot.change_presence(activity=git_status)
 
 
