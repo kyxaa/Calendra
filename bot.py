@@ -4,11 +4,11 @@ import discord
 import os
 from dotenv import load_dotenv
 from discord.ext import commands
-from config import invocation, datetime_string_format
+from config import INVOCATION, DATETIME_STRING_FORMAT, GITHUB_REPO
 from datetime import datetime, timedelta
 import asyncio
 from time import sleep
-bot = commands.Bot(command_prefix=invocation)
+bot = commands.Bot(command_prefix=INVOCATION)
 
 load_dotenv()
 discord_token = os.getenv("DISCORD_TOKEN")
@@ -59,6 +59,8 @@ def fetch_timedelta_string(timedelta):
 @bot.event
 async def on_ready():
     print("Connected!")
+    gitStatus = discord.Game(GITHUB_REPO)
+    await bot.change_presence(activity=git_status)
 
 
 async def gather_accepted_and_tentative_rsvps(message: discord.Message):
@@ -106,7 +108,7 @@ async def fetch_event_datetime(message: discord.Message):
                 datetime_str = re.sub(
                     r"\s\([A-Za-z]*\)$", "", field.value)
                 event_datetime = datetime.strptime(
-                    datetime_str, datetime_string_format)
+                    datetime_str, DATETIME_STRING_FORMAT)
                 return event_datetime
 
 
@@ -181,8 +183,8 @@ async def create_event(ctx: commands.Context):
 
 async def create_event_message(ctx: commands.Context, name: str, description: str, event_datetime: datetime, notify_everyone: bool):
     event_datetime = datetime.strptime(
-        event_datetime, datetime_string_format)
-    displayed_time = event_datetime.strftime(f'{datetime_string_format} (%A)')
+        event_datetime, DATETIME_STRING_FORMAT)
+    displayed_time = event_datetime.strftime(f'{DATETIME_STRING_FORMAT} (%A)')
     embed = discord.Embed(
         title=name, description=description, color=0x00ff00)
     embed.set_author(name=ctx.message.author.display_name,
