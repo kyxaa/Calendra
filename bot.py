@@ -217,7 +217,7 @@ async def on_raw_reaction_add(payload):
                 if payload.member in users_that_reacted and not payload.emoji.name == reaction.emoji:
                     await reaction.remove(payload.member)
         for reaction in ctx.message.reactions:
-            if not reaction.emoji.name in [ACCEPTED, TENTATIVE, REJECTED]:
+            if not reaction.emoji in [ACCEPTED, TENTATIVE, REJECTED]:
                 await reaction.clear()
 
 bot.loop.create_task(event_heartbeat())
