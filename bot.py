@@ -64,11 +64,14 @@ async def on_ready():
 
 
 async def gather_accepted_and_tentative_rsvps(message: discord.Message):
+    users_that_reacted = []
     for reaction in message.reactions:
         if reaction.emoji in [ACCEPTED, TENTATIVE]:
-            users_that_reacted = await reaction.users().flatten()
-            users_that_reacted.remove(bot.user)
-            return users_that_reacted
+            users_for_this_reaction = await reaction.users().flatten()
+            if bot.user in users_for_this_reaction:
+                users_for_this_reaction.remove(bot.user)
+            users_that_reacted.extend(users_for_this_reaction)
+    return users_that_reacted
 
 
 async def send_notification(message: discord.Message, event_datetime: datetime):
